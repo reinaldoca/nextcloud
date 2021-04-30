@@ -1,0 +1,33 @@
+
+mkdir /data/owncloud_data
+mkdir /data/owncloud_data/apps
+mkdir /data/owncloud_data/config
+mkdir /data/owncloud_data/data
+
+mkdir owncloud
+cd owncloud
+
+nano docker-compose.yml
+
+version: '3.1'
+
+services:
+
+  owncloud:
+    image: owncloud
+    restart: always
+    ports:
+      - 1234:80
+    volumes:
+      - /data/owncloud_data:/var/www/html
+      - /data/owncloud_data/apps:/var/www/html/apps
+      - /data/owncloud_data/config:/var/www/html/config
+      - /data/owncloud_data/data:/var/www/html/data
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+
+docker-compose up -d
